@@ -1,82 +1,8 @@
 <template>
-  <div>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
-    首页{{ users[0].username }} <br>
+  <Card>
     首页{{ users[0].username }} <br>
     <Button>111</Button>
-  </div>
+  </Card>
 </template>
 
 <script>
@@ -100,5 +26,5 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
 </style>

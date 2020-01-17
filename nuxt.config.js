@@ -2,7 +2,7 @@ module.exports = {
   mode: 'universal',
   server: {
     port: 8080, // default: 3000
-    // host: '0.0.0.0', // default: localhost
+    // host: '10.51.24.100', // default: localhost
   },
   /*
   ** Headers of the page
@@ -21,7 +21,7 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#000' },
+  loading: { color: '#2d8cf0' },
   /*
   ** Global CSS
   */

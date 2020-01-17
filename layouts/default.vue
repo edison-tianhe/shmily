@@ -2,7 +2,9 @@
   <div class="layout">
     <Layout>
       <Sider :collapsed-width="78" v-model="isCollapsed" collapsible>
-        <img :class="menuAvatorClasses" src="@/static/avator.png" alt="">
+        <div :class="menuAvatorClasses">
+          <img src="@/static/avator.png" alt="">
+        </div>
         <p :class="menuTalkClasses" v-for="(item, index) in talks" :key="index">
           {{ item }}
         </p>
@@ -15,7 +17,9 @@
       </Sider>
       <Layout>
         <Content>
-          <nuxt />
+          <div class="content-card">
+            <nuxt />
+          </div>
         </Content>
       </Layout>
     </Layout>
@@ -23,6 +27,7 @@
 </template>
 
 <script>
+import './default.less'
 import './scrollBar.less'
 
 export default {
@@ -72,69 +77,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less" scoped>
-.ivu-layout {
-  height: 100vh;
-  .menu-avator {
-    display: block;
-    width: 100%;
-    border-radius: 50%;
-    padding: 20px;
-  }
-  .collapsed-menu-avator {
-    padding: 10px;
-  }
-  .menu-talk {
-    width: 100%;
-    text-align: center;
-    color: #fff;
-    margin: 5px 0;
-  }
-  .collapsed-menu-talk {
-    display: none;
-  }
-  .ivu-layout-header {
-    background: #fff;
-    box-shadow: 0 2px 3px 2px rgba(0,0,0,.1);
-  }
-  .ivu-layout-content {
-    padding: 16px;
-    background: url('~@/static/bg.jpg') no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-    color: #fff;
-  }
-}
-.menu-item {
-  span {
-    display: inline-block;
-    overflow: hidden;
-    width: 69px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    vertical-align: bottom;
-    transition: width 0.2s ease 0.2s;
-  }
-  i {
-    transform: translateX(0px);
-    transition: font-size 0.2s ease, transform 0.2s ease;
-    vertical-align: middle;
-    font-size: 16px;
-  }
-}
-.collapsed-menu {
-  span {
-    display: none;
-    width: 0px;
-    transition: width 0.2s ease;
-  }
-  i {
-    transform: translateX(5px);
-    transition: font-size 0.2s ease 0.2s, transform 0.2s ease 0.2s;
-    vertical-align: middle;
-    font-size: 22px;
-  }
-}
-</style>

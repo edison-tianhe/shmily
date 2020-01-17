@@ -1,14 +1,19 @@
 <template>
-  <div class="wrapper">
+  <Card>
     留言板
-  </div>
+  </Card>
 </template>
 
 <script>
 export default {
+  key (route) {
+    return route.name
+  },
+  data () {
+    return {}
+  }
 }
 </script>
 
 <style lang="less" scoped>
-.wrapper{}
 </style>
