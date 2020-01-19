@@ -3,7 +3,7 @@
     <Layout>
       <Sider :collapsed-width="78" v-model="isCollapsed" collapsible>
         <div :class="menuAvatorClasses">
-          <img src="@/static/avator.png" alt="">
+          <img src="@/assets/images/avator.png" alt="">
         </div>
         <p :class="menuTalkClasses" v-for="(item, index) in talks" :key="index">
           {{ item }}

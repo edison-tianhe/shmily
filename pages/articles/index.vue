@@ -1,15 +1,23 @@
 <template>
   <div>
-    <Card v-for="item in articlesList" :key="item.id" @click.native="$router.push({ name: 'articles-id', params: { id: item.id } })">
-      {{ item.title }}
-    </Card>
+    <ArticlesCard
+      v-for="item in articlesList"
+      :key="item.id"
+      :data="item"
+      @click="$router.push({ name: 'articles-id', params: { id: $event.id } })"
+    />
   </div>
 </template>
 
 <script>
+import ArticlesCard from '@/components/articles-card'
+
 export default {
   key (route) {
     return route.name
+  },
+  components: {
+    ArticlesCard
   },
   data () {
     return {
@@ -28,7 +36,4 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.ivu-card {
-  cursor: pointer;
-}
 </style>
