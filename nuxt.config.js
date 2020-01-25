@@ -1,7 +1,7 @@
 module.exports = {
   mode: 'universal',
   server: {
-    port: 8080, // default: 3000
+    port: 8081, // default: 3000
     // host: '10.51.24.100', // default: localhost
   },
   /*

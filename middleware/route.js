@@ -5,8 +5,9 @@
  * @param {*} { route, redirect }
  * @returns
  */
-export default function ({ route, redirect }) {
+export default function ({ route, redirect, store }) {
   if (route.path === '/') {
     return redirect('/home')
   }
+  store.commit('setMenuName', route.name)
 }

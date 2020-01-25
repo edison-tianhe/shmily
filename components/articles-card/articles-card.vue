@@ -2,7 +2,7 @@
   <Card @click.native="$emit('click', data)">
     <div class="layer">
       <h1>{{ data.title }}</h1>
-      <p>{{ data.intro }}</p>
+      <p>{{ data.intro || '作者有点小偷懒~ 该文章么得相关简介~' }}</p>
       <div>
         <span>
           <Icon type="ios-time-outline" />
@@ -14,7 +14,7 @@
         </span>
         <span>
           <Icon type="ios-locate-outline" />
-          {{ data.visit || 0 }}
+          {{ data.preview || 0 }}
         </span>
       </div>
     </div>
@@ -36,6 +36,7 @@ export default {
 <style lang="less" scoped>
 .ivu-card {
   height: 200px;
+  margin-bottom: 20px;
   text-align: center;
   border: 0;
   background: url('https://random.52ecy.cn/randbg.php') no-repeat;

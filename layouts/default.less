@@ -22,8 +22,22 @@
   margin: 0 auto;
   transition: all 0.2s ease;
 }
-.ivu-layout {
+.ivu-layout-sider {
   height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.layout-right {
+  margin-left: 200px;
+  transition: all 0.5s ease;
+}
+.collapsed-layout-right {
+  margin-left: 78px;
+  transition: all 0.2s ease;
+}
+.ivu-layout {
+  min-height: 100vh;
   .menu-avator {
     width: 100%;
     padding: 20px;
