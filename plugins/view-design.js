@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { Button, Icon, Card, Input, Form, FormItem, Spin,
-  Layout, Sider, Menu, MenuItem, Content, Notice, Checkbox } from 'view-design'
+  Layout, Sider, Menu, MenuItem, Content, Notice, Checkbox,
+  Page } from 'view-design'
 
 Vue.component('Button', Button)
 Vue.component('Icon', Icon)
@@ -15,5 +16,6 @@ Vue.component('Menu', Menu)
 Vue.component('MenuItem', MenuItem)
 Vue.component('Content', Content)
 Vue.component('Checkbox', Checkbox)
+Vue.component('Page', Page)
 
 Vue.prototype.$Notice = Notice

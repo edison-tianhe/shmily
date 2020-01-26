@@ -44,43 +44,25 @@
         <Icon type="ios-chatboxes-outline" />
         申请互动
       </p>
-      <Form
-        ref="formValidate"
-        :model="commentForm"
-        :label-colon="true"
-        :rules="ruleValidate"
-        label-position="top"
-        class="commentForm"
-      >
-        <FormItem label="昵称" prop="name">
-          <Input v-model="commentForm.name" />
-        </FormItem>
-        <FormItem label="邮箱" prop="email">
-          <Input v-model="commentForm.email" />
-        </FormItem>
-        <FormItem label="博客">
-          <Input v-model="commentForm.blog" />
-        </FormItem>
-      </Form>
-      <div class="comment-editor">
-        <Input
-          v-model="comment"
-          :autosize="{minRows: 5,maxRows: 10}"
-          type="textarea"
-          placeholder="不来互动一波吗..."
-        />
-        <Button @click="handleSubmit('formValidate')" type="success">
-          发表评论
-        </Button>
-        <Checkbox v-model="privacy">
-          私密评论
-        </Checkbox>
+      <CommentBox :on-submit="handleSubmit" />
+      <div class="comment-list">
+        <h6 class="comment-list-h">
+          已有评论
+        </h6>
+        <ArticlesComment v-for="item in commentList" :key="item.id" :data="item" @on-reply="$set(item, '$reply', true)" />
+        <p v-if="commentList.length === 0" style="margin-bottom: 10px">
+          暂时还么得评论呀~
+        </p>
+        <Page :current="commentPage" :total="commentTotal" @on-change="getComment" simple />
       </div>
     </Card>
   </div>
 </template>
 
 <script>
+import ArticlesComment from '@/components/articles-comment'
+import CommentBox from '@/components/comment-box'
+
 export default {
   key (route) {
     return route.name
@@ -92,25 +74,17 @@ export default {
       return false
     }
   },
+  components: {
+    ArticlesComment,
+    CommentBox
+  },
   data () {
     return {
       articlesDetails: {},
-      comment: '',
-      privacy: false,
-      commentForm: {
-        name: '',
-        email: '',
-        blog: ''
-      },
-      ruleValidate: {
-        name: [
-          { required: true, message: '请输入自己的昵称', trigger: 'blur' }
-        ],
-        email: [
-          { required: true, message: '请输入自己的邮箱', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱', trigger: 'blur' }
-        ]
-      }
+      commentPage: 1,
+      commentSize: 10,
+      commentTotal: 10,
+      commentList: []
     }
   },
   async asyncData ({ $axios, params }) {
@@ -123,15 +97,33 @@ export default {
   },
   created () {
     this.findCategorys()
+    this.getComment()
   },
   methods: {
-    handleSubmit (name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.$Message.success('Success!')
-        } else {
-          this.$Message.error('Fail!')
-        }
+    handleSubmit (data) {
+      return new Promise((resolve, reject) => {
+        this.$axios.post(`/articles/comment`, {
+          ...data,
+          articleId: this.$route.params.id
+        })
+          .then((res) => {
+            if (res.code !== 0) {
+              this.$Notice.warning({
+                title: '请求失败',
+                desc: '评论失败'
+              })
+              return new Error()
+            }
+            this.$Notice.success({
+              title: '请求成功',
+              desc: '评论成功'
+            })
+            this.getComment()
+            resolve()
+          })
+          .catch((err) => {
+            reject(err)
+          })
       })
     },
     reward () {
@@ -139,6 +131,20 @@ export default {
         title: '感谢大佬',
         desc: '不过打赏还是算了吧,相互学习'
       })
+    },
+    getComment (page = this.commentPage) {
+      this.$axios.get(`/articles/comment/${this.$route.params.id}/${page}/${this.commentSize}`)
+        .then((res) => {
+          if (res.code !== 0) {
+            this.$Notice.warning({
+              title: '请求失败',
+              desc: '评论列表请求失败'
+            })
+            return false
+          }
+          this.commentList = res.data.data
+          this.commentTotal = res.data.total
+        })
     },
     findCategorys () {
       this.$axios.get(`/findCategorys`)
@@ -172,11 +178,6 @@ export default {
 </style>
 
 <style lang="less" scoped>
-@media screen and (max-width: 1000px) {
-  .commentForm > div {
-    width: 100%!important;
-  }
-}
 .articles {
   text-align: center;
   .articles-title {
@@ -208,20 +209,17 @@ export default {
       float: right;
     }
   }
-  .commentForm {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    > div {
-      width: 32%;
+  .comment-list {
+    &-h {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 20px 0;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ccc;
     }
-  }
-  .comment-editor {
-    background-color: #fff;
-    overflow: hidden;
-    label, button {
-      float: right;
-      margin: 10px;
+    .ivu-page {
+      margin: 0;
+      text-align: center;
     }
   }
 }
