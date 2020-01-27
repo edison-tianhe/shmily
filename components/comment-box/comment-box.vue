@@ -12,7 +12,7 @@
         <Input v-model="commentForm.name" placeholder="昵称" />
       </FormItem>
       <FormItem label="邮箱" prop="email">
-        <Input v-model="commentForm.email" placeholder="邮箱" />
+        <Input v-model="commentForm.email" placeholder="邮箱(真实邮箱)" />
       </FormItem>
       <FormItem label="博客">
         <Input v-model="commentForm.blog" placeholder="非必填" />
@@ -38,10 +38,10 @@
 
 <script>
 const initCommentForm = {
-  name: '天河',
-  email: '63086846@qq.com',
+  name: '',
+  email: '',
   blog: '',
-  comment: '测试评论',
+  comment: '',
   privacy: false
 }
 

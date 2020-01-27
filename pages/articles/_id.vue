@@ -44,12 +44,17 @@
         <Icon type="ios-chatboxes-outline" />
         申请互动
       </p>
-      <CommentBox :on-submit="handleSubmit" />
+      <CommentBox :on-submit="commentSubmit" />
       <div class="comment-list">
         <h6 class="comment-list-h">
           已有评论
         </h6>
-        <ArticlesComment v-for="item in commentList" :key="item.id" :data="item" @on-reply="$set(item, '$reply', true)" />
+        <ArticlesComment
+          v-for="item in commentList"
+          :key="item.id"
+          :data="item"
+          @on-reply="getComment"
+        />
         <p v-if="commentList.length === 0" style="margin-bottom: 10px">
           暂时还么得评论呀~
         </p>
@@ -100,7 +105,7 @@ export default {
     this.getComment()
   },
   methods: {
-    handleSubmit (data) {
+    commentSubmit (data) {
       return new Promise((resolve, reject) => {
         this.$axios.post(`/articles/comment`, {
           ...data,
@@ -144,6 +149,7 @@ export default {
           }
           this.commentList = res.data.data
           this.commentTotal = res.data.total
+          this.commentPage = res.data.page
         })
     },
     findCategorys () {

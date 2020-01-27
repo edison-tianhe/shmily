@@ -7,33 +7,36 @@
       <h6>{{ data.name }}</h6>
       <p class="comment-box-r-time">
         {{ data.createtime }}
-        <Button @click="$emit('on-reply', data)" size="small" type="primary">
+        <Button @click="$set(data, '$reply', true)" size="small" type="primary">
           回复
         </Button>
       </p>
       <p v-if="!data.privacy" class="comment-box-r-comment">
-        {{ data.comment }}
+        <span v-if="data.replyer" class="replyer">@{{ data.replyer }}</span> {{ data.comment }}
       </p>
       <p v-else class="comment-box-r-comment" style="color: #f36">
         这是一条私密评论
       </p>
       <transition name="fade">
         <div v-show="data.$reply" class="reply-box">
-          <CommentBox :on-submit="handleSubmit">
+          <CommentBox :on-submit="replySubmit">
             <Button @click="data.$reply = false" type="primary">
               取消回复
             </Button>
           </CommentBox>
         </div>
       </transition>
+      <ArticleComment v-for="(item, index) in data.replyList" :key="index+'-reply'" :data="item" @on-reply="$emit('on-reply')" />
     </div>
   </div>
 </template>
 
 <script>
 import CommentBox from '@/components/comment-box'
+import { dateFormat } from '@/plugins/utils'
 
 export default {
+  name: 'ArticleComment',
   components: {
     CommentBox
   },
@@ -50,12 +53,14 @@ export default {
     }
   },
   methods: {
-    handleSubmit (data) {
+    replySubmit (data) {
       return new Promise((resolve, reject) => {
-        this.$axios.post(`/articles/comment`, {
+        this.$axios.put(`/articles/reply`, {
           ...data,
+          replyer: this.data.name,
           articleId: this.$route.params.id,
-          commentId: this.data.id
+          id: this.data.id,
+          createtime: dateFormat('YYYY-mm-dd HH:MM:SS', new Date())
         })
           .then((res) => {
             if (res.code !== 0) {
@@ -70,6 +75,7 @@ export default {
               desc: '回复评论成功'
             })
             this.data.$reply = false
+            this.$emit('on-reply')
             resolve()
           })
           .catch((err) => {
@@ -115,6 +121,11 @@ export default {
     }
     &-comment {
       margin-bottom: 10px;
+      .replyer {
+        color: #239aff;
+        font-size: 12px;
+        cursor: pointer;
+      }
     }
   }
 }
