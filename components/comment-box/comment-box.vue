@@ -25,6 +25,9 @@
         type="textarea"
         placeholder="不来互动一波吗..."
       />
+      <Button @click="openEmoticon" class="comment-editor-emoticon">
+        表情包
+      </Button>
       <Button @click="handleSubmit('formValidate')" type="success">
         发表评论
       </Button>
@@ -100,6 +103,12 @@ export default {
           })
         }
       })
+    },
+    openEmoticon () {
+      this.$Notice.error({
+        title: '打开失败',
+        desc: '数据请求失败（其实我还没写表情这块。。。）'
+      })
     }
   }
 }
@@ -122,6 +131,13 @@ export default {
 .comment-editor {
   background-color: #fff;
   overflow: hidden;
+  &-emoticon{
+    float: left!important;
+    background: url('~@/assets/emoticon/image_emoticon25.png') no-repeat;
+    background-position: 10% center;
+    background-size: 20px;
+    padding-left: 30px;
+  }
   label, button {
     float: right;
     margin: 10px;
