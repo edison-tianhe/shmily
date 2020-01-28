@@ -5,35 +5,39 @@
     </div>
     <div class="comment-box-r">
       <h6>{{ data.name }}</h6>
-      <p class="comment-box-r-time">
-        {{ data.createtime }}
-        <Button @click="$set(data, '$reply', true)" size="small" type="primary">
-          回复
-        </Button>
-      </p>
       <p v-if="!data.privacy" class="comment-box-r-comment">
         <span v-if="data.replyer" class="replyer">@{{ data.replyer }}</span> {{ data.comment }}
       </p>
       <p v-else class="comment-box-r-comment" style="color: #f36">
         这是一条私密评论
       </p>
+      <p class="comment-box-r-time">
+        {{ data.createtime }}
+        <Button @click="$set(data, '$reply', true)" size="small">
+          回复
+        </Button>
+      </p>
       <transition name="fade">
         <div v-show="data.$reply" class="reply-box">
-          <CommentBox :on-submit="replySubmit">
+          <CommentBox @on-submit="$emit('on-reply', $event)">
             <Button @click="data.$reply = false" type="primary">
               取消回复
             </Button>
           </CommentBox>
         </div>
       </transition>
-      <ArticleComment v-for="(item, index) in data.replyList" :key="index+'-reply'" :data="item" @on-reply="$emit('on-reply')" />
+      <ArticleComment
+        v-for="(item, index) in data.replyList"
+        :key="index+'-reply'"
+        :data="item"
+        @on-reply="$emit('on-again-reply', $event, item)"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import CommentBox from '@/components/comment-box'
-import { dateFormat } from '@/plugins/utils'
 
 export default {
   name: 'ArticleComment',
@@ -49,39 +53,7 @@ export default {
   },
   computed: {
     avator () {
-      return `${location.protocol}//q4.qlogo.cn/g?b=qq&nk=${this.data.email.split('@')[0]}&s=5`
-    }
-  },
-  methods: {
-    replySubmit (data) {
-      return new Promise((resolve, reject) => {
-        this.$axios.put(`/articles/reply`, {
-          ...data,
-          replyer: this.data.name,
-          articleId: this.$route.params.id,
-          id: this.data.id,
-          createtime: dateFormat('YYYY-mm-dd HH:MM:SS', new Date())
-        })
-          .then((res) => {
-            if (res.code !== 0) {
-              this.$Notice.warning({
-                title: '请求失败',
-                desc: '回复评论失败'
-              })
-              return new Error()
-            }
-            this.$Notice.success({
-              title: '请求成功',
-              desc: '回复评论成功'
-            })
-            this.data.$reply = false
-            this.$emit('on-reply')
-            resolve()
-          })
-          .catch((err) => {
-            reject(err)
-          })
-      })
+      return `https://q4.qlogo.cn/g?b=qq&nk=${this.data.email.split('@')[0]}&s=5`
     }
   }
 }
@@ -105,7 +77,7 @@ export default {
   }
   &-r {
     margin-left: 70px;
-    border-bottom: 1px solid #cccccc;
+    // border-bottom: 1px solid #cccccc;
     h6 {
       font-size: 15px;
       margin-bottom: 5px;
@@ -117,10 +89,13 @@ export default {
       button {
         margin-left: 20px;
         font-size: 12px;
+        color: #239aff;
+        background-color: transparent;
+        border-color: #239aff;
       }
     }
     &-comment {
-      margin-bottom: 10px;
+      margin: 10px 0;
       .replyer {
         color: #239aff;
         font-size: 12px;

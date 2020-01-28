@@ -44,7 +44,7 @@
         <Icon type="ios-chatboxes-outline" />
         申请互动
       </p>
-      <CommentBox :on-submit="commentSubmit" />
+      <CommentBox ref="comment" @on-submit="commentSubmit" />
       <div class="comment-list">
         <h6 class="comment-list-h">
           已有评论
@@ -53,7 +53,8 @@
           v-for="item in commentList"
           :key="item.id"
           :data="item"
-          @on-reply="getComment"
+          @on-reply="replySubmit($event, item)"
+          @on-again-reply="replySubmit"
         />
         <p v-if="commentList.length === 0" style="margin-bottom: 10px">
           暂时还么得评论呀~
@@ -67,6 +68,7 @@
 <script>
 import ArticlesComment from '@/components/articles-comment'
 import CommentBox from '@/components/comment-box'
+import { dateFormat } from '@/plugins/utils'
 
 export default {
   key (route) {
@@ -105,31 +107,48 @@ export default {
     this.getComment()
   },
   methods: {
-    commentSubmit (data) {
-      return new Promise((resolve, reject) => {
-        this.$axios.post(`/articles/comment`, {
-          ...data,
-          articleId: this.$route.params.id
-        })
-          .then((res) => {
-            if (res.code !== 0) {
-              this.$Notice.warning({
-                title: '请求失败',
-                desc: '评论失败'
-              })
-              return new Error()
-            }
-            this.$Notice.success({
-              title: '请求成功',
-              desc: '评论成功'
-            })
-            this.getComment()
-            resolve()
-          })
-          .catch((err) => {
-            reject(err)
-          })
+    replySubmit (data, item) {
+      this.$axios.put(`/articles/reply`, {
+        ...data,
+        replyer: item.name,
+        articleId: this.$route.params.id,
+        id: item.id,
+        createtime: dateFormat('YYYY-mm-dd HH:MM:SS', new Date())
       })
+        .then((res) => {
+          if (res.code !== 0) {
+            this.$Notice.warning({
+              title: '请求失败',
+              desc: '回复评论失败'
+            })
+          }
+          this.$Notice.success({
+            title: '请求成功',
+            desc: '回复评论成功'
+          })
+          this.$set(item, '$reply', false)
+          this.getComment()
+        })
+    },
+    commentSubmit (data) {
+      this.$axios.post(`/articles/comment`, {
+        ...data,
+        articleId: this.$route.params.id
+      })
+        .then((res) => {
+          if (res.code !== 0) {
+            this.$Notice.warning({
+              title: '请求失败',
+              desc: '评论失败'
+            })
+          }
+          this.$Notice.success({
+            title: '请求成功',
+            desc: '评论成功'
+          })
+          this.$refs.comment.init()
+          this.getComment()
+        })
     },
     reward () {
       this.$Notice.info({

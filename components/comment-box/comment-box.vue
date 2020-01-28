@@ -49,18 +49,6 @@ const initCommentForm = {
 }
 
 export default {
-  props: {
-    data: {
-      type: Object,
-      require: true,
-      default: () => {}
-    },
-    onSubmit: {
-      type: Function,
-      require: true,
-      default: () => {}
-    }
-  },
   data () {
     return {
       commentForm: { ...initCommentForm },
@@ -76,6 +64,9 @@ export default {
     }
   },
   methods: {
+    init () {
+      this.commentForm = { ...initCommentForm }
+    },
     handleSubmit (name) {
       if (!this.commentForm.comment) {
         this.$Notice.error({
@@ -86,16 +77,7 @@ export default {
       }
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.onSubmit(this.commentForm)
-            .then(() => {
-              this.commentForm = { ...initCommentForm }
-            })
-            .catch(() => {
-              this.$Notice.warning({
-                title: '请求失败',
-                desc: '评论失败'
-              })
-            })
+          this.$emit('on-submit', this.commentForm)
         } else {
           this.$Notice.error({
             title: '提示',
