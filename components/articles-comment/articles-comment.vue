@@ -4,7 +4,12 @@
       <img :src="avator" :alt="data.name">
     </div>
     <div class="comment-box-r">
-      <h6>{{ data.name }}</h6>
+      <h6>
+        {{ data.name }}
+        <span v-if="data.browseN" :style="{backgroundImage: 'url(' + require(`@/assets/browse/${data.browseN.toLowerCase()}.png`) + ')'}">
+          {{ data.browseN }} / {{ data.browseV }}
+        </span>
+      </h6>
       <p v-if="!data.privacy" class="comment-box-r-comment">
         <span v-if="data.replyer" class="replyer">@{{ data.replyer }}</span> {{ data.comment }}
       </p>
@@ -80,7 +85,21 @@ export default {
     // border-bottom: 1px solid #cccccc;
     h6 {
       font-size: 15px;
-      margin-bottom: 5px;
+      line-height: 30px;
+      span {
+        opacity: 0;
+        font-size: 12px;
+        line-height: 15px;
+        background-repeat: no-repeat;
+        background-size: 13px 13px;
+        background-color: #ff8383;
+        background-position: 5px 5px;
+        color: #fff;
+        padding: 5px;
+        padding-left: 23px;
+        border-radius: 5px;
+        transition: all .3s;
+      }
     }
     &-time {
       font-size: 12px;
@@ -101,6 +120,13 @@ export default {
         font-size: 12px;
         cursor: pointer;
       }
+    }
+  }
+}
+.comment-box:hover {
+  h6 {
+    span {
+      opacity: 1;
     }
   }
 }

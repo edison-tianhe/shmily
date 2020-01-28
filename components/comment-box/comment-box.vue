@@ -40,12 +40,16 @@
 </template>
 
 <script>
+import { getBrowserInfo } from '@/plugins/utils'
+
 const initCommentForm = {
   name: '',
   email: '',
   blog: '',
   comment: '',
-  privacy: false
+  privacy: false,
+  browseN: '',
+  browseV: ''
 }
 
 export default {
@@ -62,6 +66,10 @@ export default {
         ]
       }
     }
+  },
+  mounted () {
+    initCommentForm.browseN = getBrowserInfo().name
+    initCommentForm.browseV = getBrowserInfo().version
   },
   methods: {
     init () {
