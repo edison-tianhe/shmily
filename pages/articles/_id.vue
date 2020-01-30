@@ -18,7 +18,11 @@
       </span>
       <span>
         <Icon type="ios-pricetags-outline" />
-        {{ articlesDetails.categoryLabel || '无标签' }}
+        {{
+          categorys[articlesDetails.category]
+            ? categorys[articlesDetails.category]
+            : '无标签'
+        }}
       </span>
     </div>
     <Card class="articles-box">
@@ -66,14 +70,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import ArticlesComment from '@/components/articles-comment'
 import CommentBox from '@/components/comment-box'
 import { dateFormat } from '@/plugins/utils'
 
 export default {
-  key (route) {
-    return route.name
-  },
   validate ({ params }) {
     if (params.id) {
       return true
@@ -94,6 +96,9 @@ export default {
       commentList: []
     }
   },
+  computed: {
+    ...mapState(['categorys'])
+  },
   async asyncData ({ $axios, params }) {
     const res = await $axios.get(`/articles/${params.id}`)
     if (res.code === 0) {
@@ -103,7 +108,6 @@ export default {
     }
   },
   created () {
-    this.findCategorys()
     this.getComment()
   },
   methods: {
@@ -169,22 +173,6 @@ export default {
           this.commentList = res.data.data
           this.commentTotal = res.data.total
           this.commentPage = res.data.page
-        })
-    },
-    findCategorys () {
-      this.$axios.get(`/findCategorys`)
-        .then((res) => {
-          if (res.code !== 0) {
-            this.$Notice.warning({
-              title: '请求失败',
-              desc: '分类请求失败'
-            })
-            return false
-          }
-          const categorys = res.data.filter((v) => {
-            return v.id === this.articlesDetails.category
-          })
-          this.$set(this.articlesDetails, 'categoryLabel', categorys[0].label)
         })
     }
   }

@@ -18,7 +18,7 @@
           theme="dark"
           width="auto"
         >
-          <MenuItem v-for="item in menuList" :key="item.name" :to="{ name: item.name}" :name="item.name">
+          <MenuItem v-for="item in menuList" :key="item.name" :to="{ name: item.name }" :name="item.name">
             <Icon :type="item.icon" />
             <span>{{ item.title }}</span>
           </MenuItem>
@@ -28,6 +28,9 @@
         <Content>
           <div class="content-card">
             <nuxt />
+            <div class="layout-footer">
+              小站由Nuxt+Node+Koa+Mysql+Iview构建
+            </div>
           </div>
         </Content>
       </Layout>

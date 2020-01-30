@@ -20,6 +20,9 @@
         @on-reply="replySubmit($event, item)"
         @on-again-reply="replySubmit"
       />
+      <p v-if="messageList.length === 0" style="margin: 20px 0; text-align: center">
+        还没有人来过,快给他留下第一条惊喜吧~
+      </p>
       <Page :current="messagePage" :total="messageTotal" @on-change="getMessage" simple />
     </Card>
   </div>
@@ -31,9 +34,6 @@ import ArticlesComment from '@/components/articles-comment'
 import { dateFormat } from '@/plugins/utils'
 
 export default {
-  key (route) {
-    return route.name
-  },
   components: {
     CommentBox,
     ArticlesComment

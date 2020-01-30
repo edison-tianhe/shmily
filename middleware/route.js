@@ -7,7 +7,7 @@
  */
 export default function ({ route, redirect, store }) {
   if (route.path === '/') {
-    return redirect('/home')
+    return redirect(`/home`)
   }
   store.commit('setMenuName', route.name)
 }
