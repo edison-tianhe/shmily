@@ -2,7 +2,9 @@ module.exports = {
   mode: 'universal',
   server: {
     port: 8081, // default: 3000
-    // host: '10.51.24.100', // default: localhost
+    host: process.env.NODE_ENV === 'development'
+          ? 'localhost'
+          : '172.17.154.2',
   },
   /*
   ** Headers of the page
@@ -52,13 +54,6 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios'
   ],
-  /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
-  axios: {
-    baseURL: 'http://localhost:3000'
-  },
   router: {
     middleware: ['route']
   },

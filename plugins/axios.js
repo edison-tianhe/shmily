@@ -1,4 +1,7 @@
 export default function ({ $axios, redirect }) {
+  $axios.defaults.baseURL = process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : 'http://47.95.242.44:3000/'
   $axios.onRequest((config) => {
     // *IE浏览器数据请求缓存问题
     if (config.method === 'post') {
