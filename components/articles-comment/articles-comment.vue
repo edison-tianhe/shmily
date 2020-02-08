@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import md5 from 'js-md5'
 import CommentBox from '@/components/comment-box'
 
 export default {
@@ -58,7 +59,12 @@ export default {
   },
   computed: {
     avator () {
-      return `https://q4.qlogo.cn/g?b=qq&nk=${this.data.email.split('@')[0]}&s=5`
+      if (this.data.email.includes('@qq.com')) {
+        return `https://q4.qlogo.cn/g?b=qq&nk=${this.data.email.split('@')[0]}&s=5`
+      } else {
+        // https://en.gravatar.com/site/implement/
+        return `https://www.gravatar.com/avatar/${md5(this.data.email)}?s=100`
+      }
     }
   }
 }
