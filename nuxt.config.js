@@ -21,6 +21,9 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      { src: 'http://47.95.242.44/live2d-widget/autoload.js' }
     ]
   },
   /*
